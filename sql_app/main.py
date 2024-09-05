@@ -2,9 +2,11 @@ from fastapi import FastAPI, Depends, HTTPException,status
 from sqlalchemy.orm import Session
 from .database import SessionLocal, engine
 from .models import Base
-from . import crud,  schemas
+from . import crud,  schemas,security,email
 from fastapi.middleware.cors import CORSMiddleware
 from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordRequestForm
+import uuid
 
 Base.metadata.create_all(bind=engine)
 
@@ -57,3 +59,31 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+@app.post("/forgot-Password")
+async def forgot_password(request: schemas.ForgotPassword,db: Session = Depends(get_db)):
+    #check the user existis
+    result =  crud.get_user_by_email(db, email=request.email)
+    if not result:
+        raise HTTPException(status_code=404, detail= 'User not found.')
+    
+    #create reset code and save 
+    reset_code= str(uuid.uuid1())
+    crud.create_reset_code(db ,request.email,reset_code) 
+
+    #send the mail
+    subjet = "Your Password reset Code"
+    recip= [request.email]
+    message = """
+    <!DOCTYPE html>
+    <html>
+        <a href= "http://http://localhost:3000/ResetPassword?reset_password_token={1:}" a>
+    </html>
+        """.format(request.email,reset_code)
+    
+    await email.send_email(subjet,recip,message)
+
+    return {
+        "code":200,
+        "message" : "we've sent an email instructions to reset"
+    }

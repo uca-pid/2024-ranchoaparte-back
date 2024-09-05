@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, create_engine,Date
+from sqlalchemy import Column, Integer, String, create_engine,Date,DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -20,3 +20,11 @@ class User(Base):
     hashed_password = Column(String)
 
 Base.metadata.create_all(bind=engine)
+
+class Code(Base):
+   __tablename__ = "py_codes"
+   id = Column(Integer, primary_key=True, index=True)
+   email= Column(String, index=True)
+   reset_code = Column(String, index=True)
+   status= Column(String(1), index=True)
+   expired_in = Column(DateTime, index=True)

@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
-from .models import User
+from .models import User,Code
 from .schemas import UserCreate
 from passlib.context import CryptContext
-
+from datetime import datetime
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -16,5 +16,14 @@ def create_user(db: Session, user: UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
 def get_user(db: Session, user_id: int):
     return db.query(User).filter(User.id == user_id).first()
+
+def create_reset_code(db: Session,email: str ,reset_code:str):
+    db_reset_code_withExpDate = Code(email = email,reset_code= reset_code, status = "1", expired_in= datetime.now() )
+    db.add(db_reset_code_withExpDate)
+    db.commit()
+    db.refresh(db_reset_code_withExpDate)
+    return db_reset_code_withExpDate
+

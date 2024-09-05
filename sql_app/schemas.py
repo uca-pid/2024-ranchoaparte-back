@@ -20,3 +20,6 @@ class UserResponse(UserBase):
 
     class Config:
         orm_mode = True
+
+class ForgotPassword(BaseModel):
+    email: str
