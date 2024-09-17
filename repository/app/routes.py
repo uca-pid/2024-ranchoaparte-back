@@ -1,8 +1,10 @@
 from fastapi import APIRouter,Depends,Request
 from app.models.food import Food
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
-from app.models.user import UserRegister, UserForgotPassword, UserLogin
+from app.controllers.category_controller import userCategoryLog,get_category,update_category_controller
+# from app.models.user import UserRegister, UserForgotPassword, UserLogin
 # from app.controllers.user_controller import 
+from app.models.category import Category
 from app.models.userFood import UserFood
 from app.controllers.foodUser_controller import userFoodLog,get_meals_user,delete_meal
 from datetime import datetime
@@ -55,6 +57,18 @@ async def get_meal(user_id:str):
 @router.delete("/DeleteMealUser/{id_UserFood}")
 async def delete_mealUser(id_UserFood:str):
     return delete_meal(id_UserFood)
+
+@router.post("/CreateCategory/")
+async def category_log(category: Category):
+    userCategoryLog(category)
+    return {"message": "new category!"}
+
+@router.get("/GetCategoryUser/{user_id}")
+async def get_category_user(user_id:str):
+    return get_category(user_id)
+@router.put("/UpdateCategroy/{category_id}")
+async def update_category(category_id:str,updated_category: Category):
+    return update_category_controller(category_id,updated_category)
 
 
 
