@@ -4,17 +4,18 @@ from app.routes import router
 
 app = FastAPI()
 
+# Allow CORS for the frontend
 origins = [
-    "http://localhost:4201",  # URL de tu aplicación Angular
+    "http://localhost:3000",  # Your frontend URL
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Permitir todos los métodos HTTP
-    allow_headers=["*"],  # Permitir todos los encabezados
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers (Authorization, Content-Type, etc.)
 )
 
-# Incluir las rutas de tu API
+# Your routes here...
 app.include_router(router)

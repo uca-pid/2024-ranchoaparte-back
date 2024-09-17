@@ -1,0 +1,47 @@
+from app.service.user_service import create_user, get_user_by_email, send_password_reset_email, login_user,get_current_user_service
+from app.models.user import UserLogin, UserRegister,UserForgotPassword
+from fastapi import HTTPException,Request
+
+
+def login(user: UserLogin):
+    return {"message": "Login successful"}
+# Controlador para registrar un nuevo usuario
+def userLog(user: UserRegister):
+    response = create_user(user)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": "User registered successfully"}
+
+
+# Controlador para recuperación de contraseña
+def forgot_password(user: UserForgotPassword):
+    db_user = user_by_email(user.email)
+    
+    if db_user:  # If user exists in Firestore
+        return send_password_reset_email(user.email)
+    else:
+        raise HTTPException(status_code=404, detail="Email not found")
+    
+def user_by_email(email: str):
+    response = get_user_by_email(email)
+    
+    # If user not found, get_user_by_email returns None
+    if response is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # If an error occurred during the query
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    
+    return response
+def login_user_controller(user: UserLogin):
+    response = login_user(user)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": "Log in succesful"}
+
+def get_current_user (request: Request):
+    response = get_current_user_service(request)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": "Log in succesful"}

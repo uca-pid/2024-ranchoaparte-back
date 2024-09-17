@@ -5,4 +5,4 @@ class Food(BaseModel):
     name: str
     calories_portion: float = Field(..., ge=0)  # Ensure Food_price is non-negative
     measure: str
-    amount_portion: float = Field(..., ge=0)
+    measure_portion: float = Field(..., ge=0)
