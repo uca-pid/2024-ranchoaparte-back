@@ -2,7 +2,7 @@ from fastapi import APIRouter,Depends,Request
 from app.models.food import Food
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog,get_category,update_category_controller,delete_category
-from app.controllers.catFood_controller import CategoryFoodLog,get_Food_perCat,delete_Catfood
+from app.controllers.catFood_controller import CategoryFoodLog,get_Food_perCat,delete_Catfood,delete_AllCatfoodByCategory
 # from app.models.user import UserRegister, UserForgotPassword, UserLogin
 # from app.controllers.user_controller import 
 from app.models.catFood import CategoryFood
@@ -83,8 +83,12 @@ async def get_Food_Percategory(id_Category:str):
 @router.delete("/DeleteCategory/{id_Category}")
 async def delete_category_user(id_Category:str):
     delete_category(id_Category)
-    delete_Catfood(id_Category)
-    return {"message": "new categoryFood!"}
+    delete_AllCatfoodByCategory(id_Category)
+    return {"message": "Category Delete Succefully!"}
+@router.delete("/DeleteCatFood/{id_CatFood}")
+async def delete_catFood_user(id_CatFood:str):
+    delete_Catfood(id_CatFood)
+    return {"message": "CatFood Delete succefully!"}
 
 
 

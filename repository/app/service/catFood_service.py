@@ -29,7 +29,7 @@ def getFood_category(id_cat):
         return {"message": "List fetched successfully", "categories": categorie_list}
     except Exception as e:
         return {"error": str(e)}
-def delete_cateFood(id_cat):
+def delete_cateFoodByCategory(id_cat):
     try:
         user_categories_query = db.collection('CatFood').where('id_Category', '==', id_cat)
         user_categories = user_categories_query.stream()
@@ -40,5 +40,13 @@ def delete_cateFood(id_cat):
             catFood_ref.delete()
         
         return {"message": "catFood delete succefully"}
+    except Exception as e:
+        return {"error": str(e)}
+def delete_catFood(id_catFood): 
+    try:
+        # Referencia al documento del foodo
+        food_ref = db.collection('CatFood').document(id_catFood)
+        food_ref.delete()
+        return { "message": "user food  delete successful"}
     except Exception as e:
         return {"error": str(e)}
