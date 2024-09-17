@@ -28,14 +28,18 @@ def get_user_categories(user_id):
         return {"error": str(e)}
 def update_category(category_id, updated_category_data):
     try:
-        # Get a reference to the category document
         updated_data = updated_category_data.dict()
         category_ref = db.collection('Category').document(category_id)
-        
-        # Update the document with new data
         category_ref.update(updated_data)
         
         return {"message": "Category updated successfully"}
+    except Exception as e:
+        return {"error": str(e)}
+def delete_category_service(id_category):
+    try:
+        food_ref = db.collection('Category').document(id_category)
+        food_ref.delete()
+        return { "message": "user food  delete successful"}
     except Exception as e:
         return {"error": str(e)}
 

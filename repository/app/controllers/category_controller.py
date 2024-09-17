@@ -1,4 +1,4 @@
-from app.service.category_service import create_category,get_user_categories,update_category
+from app.service.category_service import create_category,get_user_categories,update_category,delete_category_service
 from app.models.category import Category
 from fastapi import HTTPException
 
@@ -17,3 +17,7 @@ def update_category_controller(category_id: str,updated_category: Category):
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
     return {"message": response}
+def delete_category(category_id: str):
+    response = delete_category_service(category_id)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])

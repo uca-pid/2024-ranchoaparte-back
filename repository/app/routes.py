@@ -1,9 +1,11 @@
 from fastapi import APIRouter,Depends,Request
 from app.models.food import Food
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
-from app.controllers.category_controller import userCategoryLog,get_category,update_category_controller
+from app.controllers.category_controller import userCategoryLog,get_category,update_category_controller,delete_category
+from app.controllers.catFood_controller import CategoryFoodLog,get_Food_perCat,delete_Catfood
 # from app.models.user import UserRegister, UserForgotPassword, UserLogin
 # from app.controllers.user_controller import 
+from app.models.catFood import CategoryFood
 from app.models.category import Category
 from app.models.userFood import UserFood
 from app.controllers.foodUser_controller import userFoodLog,get_meals_user,delete_meal
@@ -69,6 +71,20 @@ async def get_category_user(user_id:str):
 @router.put("/UpdateCategroy/{category_id}")
 async def update_category(category_id:str,updated_category: Category):
     return update_category_controller(category_id,updated_category)
+
+@router.post("/CreateCatFood/")
+async def category_log(catFood: CategoryFood):
+    CategoryFoodLog(catFood)
+    return {"message": "new categoryFood!"}
+@router.get("/GetFoodsPerCategory/{id_Category}")
+async def get_Food_Percategory(id_Category:str):
+    return get_Food_perCat(id_Category)
+
+@router.delete("/DeleteCategory/{id_Category}")
+async def delete_category_user(id_Category:str):
+    delete_category(id_Category)
+    delete_Catfood(id_Category)
+    return {"message": "new categoryFood!"}
 
 
 
