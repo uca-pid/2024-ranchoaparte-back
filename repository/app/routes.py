@@ -9,7 +9,7 @@ from app.models.user import UserRegister, UserForgotPassword, UserLogin, UpdateU
 from app.models.catFood import CategoryFood
 from app.models.category import Category
 from app.models.userFood import UserFood
-from app.controllers.foodUser_controller import userFoodLog, get_meals_user, delete_meal
+from app.controllers.foodUser_controller import update_userFood_controller, userFoodLog, get_meals_user, delete_meal
 from datetime import datetime
 from .config import verify_token
 
@@ -75,6 +75,11 @@ async def get_meal(user_id: str):
 @router.delete("/DeleteMealUser/{id_UserFood}")
 async def delete_mealUser(id_UserFood: str):
     return delete_meal(id_UserFood)
+
+
+@router.put("/UpdateUserFood/{userFood_id}")
+async def update_category(userFood_id: str, userFood_data: UserFood):
+    return update_userFood_controller(userFood_id, userFood_data)
 
 
 @router.post("/CreateCategory/")

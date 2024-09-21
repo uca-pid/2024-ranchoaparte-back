@@ -42,3 +42,14 @@ def delete_food_user_service(userFood_id):
         return {"message": "user food  delete successful"}
     except Exception as e:
         return {"error": str(e)}
+
+
+def update_food_user(userFood_id, userFood_data):
+    try:
+        updated_data = userFood_data.dict()
+        userFood_ref = db.collection('UserFood').document(userFood_id)
+        userFood_ref.update(updated_data)
+
+        return {"message": "UserFood updated successfully"}
+    except Exception as e:
+        return {"error": str(e)}
