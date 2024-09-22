@@ -77,7 +77,7 @@ def get_user_by_email(email):
 def get_user_by_id(user_id):
     try:
         user_ref = db.collection('User')
-        query = user_ref.where('id_User', '==', user_id).stream()
+        query = user_ref.where('id_user', '==', user_id).stream()
 
         for user in query:
             return user.to_dict()  # If user is found, return user data as a dictionary
