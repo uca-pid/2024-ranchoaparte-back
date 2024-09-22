@@ -76,11 +76,11 @@ def get_user_by_email(email):
 
 def get_user_by_id(user_id):
     try:
-        user_ref = db.collection('User').document(user_id)
-        user = user_ref.get()
+        user_ref = db.collection('User')
+        query = user_ref.where('id_User', '==', user_id).stream()
 
-        if user.exists:
-            return user.to_dict()
+        for user in query:
+            return user.to_dict()  # If user is found, return user data as a dictionary
 
         return None
     except Exception as e:
