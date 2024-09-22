@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from app.models.food import Food
-from app.controllers.user_controller import update_user_info
+from app.controllers.user_controller import update_user_info, user_by_id
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
@@ -22,6 +22,11 @@ router = APIRouter()
 @router.get("/")
 def read_main():
     return {"msg": "Server is running"}
+
+
+@router.get("/User/{user_id}")
+async def get_user(user_id: str):
+    return user_by_id(user_id)
 
 
 @router.post("/Food_log/")

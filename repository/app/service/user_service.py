@@ -74,6 +74,19 @@ def get_user_by_email(email):
         return {"error": str(e)}
 
 
+def get_user_by_id(user_id):
+    try:
+        user_ref = db.collection('User').document(user_id)
+        user = user_ref.get()
+
+        if user.exists:
+            return user.to_dict()
+
+        return None
+    except Exception as e:
+        return {"error": str(e)}
+
+
 def send_password_reset_email(email):
     # Firebase Auth REST API URL
     url = f'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={api_key}'

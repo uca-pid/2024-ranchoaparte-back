@@ -39,6 +39,20 @@ def user_by_email(email: str):
     return response
 
 
+def user_by_id(user_id: str):
+    response = get_user_by_id(user_id)
+
+    # If user not found, get_user_by_email returns None
+    if response is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # If an error occurred during the query
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+
+    return response
+
+
 def login_user_controller(user: UserLogin):
     response = login_user(user)
     if "error" in response:
