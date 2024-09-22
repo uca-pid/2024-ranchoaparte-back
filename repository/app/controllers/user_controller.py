@@ -1,5 +1,5 @@
-from app.service.user_service import create_user, get_user_by_id, get_user_by_email, send_password_reset_email, login_user, get_current_user_service, update_user
-from app.models.user import UserLogin, UserRegister, UserForgotPassword, UpdateUserData
+from app.service.user_service import create_user, delete_user, reset_password, get_user_by_id, get_user_by_email, send_password_reset_email, login_user, get_current_user_service, update_user
+from app.models.user import UserLogin, ResetPassword, UserRegister, UserForgotPassword, UpdateUserData
 from fastapi import HTTPException, Request
 
 
@@ -13,6 +13,20 @@ def userLog(user: UserRegister):
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
     return {"message": "User registered successfully"}
+
+
+def delete_user_by_id(user_id: str):
+    response = delete_user(user_id)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": "User registered successfully"}
+
+
+def resetPassword(reset: ResetPassword):
+    response = reset_password(reset)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": "Password change successfully"}
 
 
 # Controlador para recuperación de contraseña

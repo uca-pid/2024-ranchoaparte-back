@@ -61,6 +61,45 @@ def create_user(user_data):
         return {"error": str(e)}
 
 
+def delete_user(user_id):
+    try:
+        user_ref = db.collection('User').where(
+            'id_user', '==', user_id).stream()
+        user_doc = None
+
+        for doc in user_ref:
+            user_doc = doc
+
+        if user_doc:
+            user_doc.reference.delete()
+
+            food_ref = db.collection('Foods').where(
+                'user_id', '==', user_id).stream()
+            for doc in food_ref:
+                doc.reference.delete()
+
+            auth.delete_user(user_id)
+            return {"message": "User account and data deleted successfully"}
+        else:
+            return {"error": "User not found"}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def reset_password(reset):
+    try:
+        # Verificar el token enviado
+        decoded_token = auth.verify_id_token(reset.token)
+        user_id = decoded_token['uid']
+
+        # Cambiar la contraseña del usuario en Firebase Authentication
+        auth.update_user(user_id, password=reset.new_password)
+        return {"message": "Password reset successfully"}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 def get_user_by_email(email):
     try:
         users_ref = db.collection('User')
@@ -112,18 +151,14 @@ def send_password_reset_email(email):
 
 def update_user(user_id, user_data):
     try:
-        users_ref = db.collection('User')
-        query = users_ref.where('id_user', '==', user_id).stream()
+        updated_data = user_data.dict()
+        user_ref = db.collection('User').where(
+            'id_user', '==', user_id).stream()
 
-        query.update({
-            "name": user_data.name,
-            "surname": user_data.surname,
-            "weight": user_data.weight,
-            "height": user_data.height,
-            "birthDate": user_data.birthDate
-        })
+        for doc in user_ref:
+            doc.reference.update(updated_data)
+            return {"message": "User data updated successfully"}
 
-        return {"message": "User data updated successfully"}
     except Exception as e:
         return {"error": str(e)}
 

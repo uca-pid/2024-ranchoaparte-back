@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from app.models.food import Food
-from app.controllers.user_controller import update_user_info, user_by_id
+from app.controllers.user_controller import update_user_info, delete_user_by_id, user_by_id, resetPassword
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
-from app.models.user import UserRegister, UserForgotPassword, UserLogin, UpdateUserData
+from app.models.user import UserRegister, ResetPassword, UserForgotPassword, UserLogin, UpdateUserData
 # from app.controllers.user_controller import
 from app.models.catFood import CategoryFood
 from app.models.category import Category
@@ -27,6 +27,17 @@ def read_main():
 @router.get("/User/{user_id}")
 async def get_user(user_id: str):
     return user_by_id(user_id)
+
+
+@router.put("/reset_password/{token}")
+async def reset_password(data: ResetPassword):
+    return resetPassword(data)
+
+
+@router.delete("/delete_user/{id_user}")
+async def delete_user(id_user: str):
+    delete_user_by_id(id_user)
+    return {"message": "User Delete succefully!"}
 
 
 @router.post("/Food_log/")
@@ -83,7 +94,7 @@ async def delete_mealUser(id_UserFood: str):
 
 
 @router.put("/UpdateUserFood/{userFood_id}")
-async def update_category(userFood_id: str, userFood_data: UserFood):
+async def update_user_food(userFood_id: str, userFood_data: UserFood):
     return update_userFood_controller(userFood_id, userFood_data)
 
 

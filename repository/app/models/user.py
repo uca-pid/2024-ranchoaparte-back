@@ -23,8 +23,13 @@ class UserLogin(BaseModel):
     password: str
 
 
+class ResetPassword(BaseModel):
+    token: str
+    new_password: str
+
+
 class UpdateUserData(BaseModel):
-    uid: str
+    id_user: str
     name: str
     surname: str
     weight: float
