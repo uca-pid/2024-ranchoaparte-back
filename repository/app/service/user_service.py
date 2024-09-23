@@ -69,6 +69,7 @@ def delete_user(user_id):
 
         for doc in user_ref:
             user_doc = doc
+            print (user_doc)
 
         if user_doc:
             user_doc.reference.delete()
