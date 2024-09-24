@@ -3,8 +3,8 @@ from app.models.userFood import UserFood
 from fastapi import HTTPException
 from datetime import datetime
 
-def updateDailyCalories_controller(calPerDay_id, dataUpdate):
-    response = updateDailyCalories(calPerDay_id, dataUpdate)
+def updateDailyCalories_controller(calPerDay_id, calUpdate):
+    response = updateDailyCalories(calPerDay_id, calUpdate)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
     return {"message": response}

@@ -145,10 +145,12 @@ async def UserTotCal_log(userTotCal: UserTotCal):
     return {"message": "new Totalcal added!"}
 
 
-@router.post("/UpdateTotCaloriesUser/",tags=["Food"])
-async def UpdateUserTotCal_log(calPerDay_id, dataUpdate: UserTotCal):
-    updateDailyCalories_controller(calPerDay_id, dataUpdate)
-    return {"message": "update correct!"}
+@router.put("/UpdateTotCaloriesUser/{calPerDay_id}", tags=["Food"])
+async def UpdateUserTotCal_log(calPerDay_id: str, calUpdate: int):
+    response = updateDailyCalories_controller(calPerDay_id, calUpdate)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": "Update successful!"}
 
 @router.get("/GetTotCalUser/{user_id}",tags=["Food"])
 async def get_Totcal_user(user_id: str):
