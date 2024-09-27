@@ -5,3 +5,6 @@ class UserTotCal(BaseModel):
     id_user: str
     day: datetime # Ensure Food_price is non-negative
     totCal: float = Field(..., ge=0)
+
+class CalUpdateModel(BaseModel):
+    calUpdate: int

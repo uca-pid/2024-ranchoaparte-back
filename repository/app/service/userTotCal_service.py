@@ -15,7 +15,7 @@ def updateDailyCalories(calPerDay_id, calUpdate):
     try:
         # Update only the totCal field
         usertotCal_ref.update({
-            'totCal': calUpdate
+            'totCal': calUpdate.calUpdate
         })
         print(f"Updated total calories to {calUpdate} for document {calPerDay_id}")
         return {"message": f"Updated total calories to {calUpdate}."}

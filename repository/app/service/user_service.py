@@ -1,4 +1,5 @@
 from ..config import db, auth, verify_token
+from flask import Flask, request, jsonify
 import requests
 import os
 from dotenv import load_dotenv
@@ -68,7 +69,6 @@ def delete_user(user_id):
 
         for doc in user_ref:
             user_doc = doc
-            print (user_doc)
 
         if user_doc:
             user_doc.reference.delete()
@@ -78,8 +78,14 @@ def delete_user(user_id):
             for doc in food_ref:
                 doc.reference.delete()
 
-            auth.delete_user(user_id)
-            return {"message": "User account and data deleted successfully"}
+            try:
+                auth.delete_user(user_id)
+                print(
+                    f"Usuario con UID {user_id} eliminado correctamente de Firebase Authentication.")
+            except Exception as e:
+                print(
+                    f"Error al eliminar usuario en Firebase Authentication: {str(e)}")
+                return {"error": "Failed to delete user from Firebase Authentication."}
         else:
             return {"error": "User not found"}
 
