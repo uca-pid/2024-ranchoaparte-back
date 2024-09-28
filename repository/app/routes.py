@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from app.models.food import Food
 from app.controllers.user_controller import update_user_info, delete_user_by_id, user_by_id, resetPassword
-from app.controllers.userTotCal_controller import updateDailyCalories_controller,createUserTotCal,get_TotCal
+from app.controllers.userTotCal_controller import updateDailyCalories_controller, createUserTotCal, get_TotCal
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
@@ -56,7 +56,7 @@ async def read_food_logs():
     return get_foods()
 
 
-@router.get("/Foods/{food_id}",tags=["Food"])
+@router.get("/Foods/{food_id}", tags=["Food"])
 async def get_food(food_id: str):
     return get_food_by_id(food_id)
 
@@ -67,7 +67,7 @@ async def get_current_user(request: Request):
     return decoded_token
 
 
-@router.get("/api/user",tags=["User"] )
+@router.get("/api/user", tags=["User"])
 async def get_user_data(current_user: dict = Depends(get_current_user)):
     # Now you have access to the current user
     return {"email": current_user["email"], "uid": current_user["uid"]}
@@ -90,7 +90,7 @@ async def get_meal(user_id: str):
     return get_meals_user(user_id)
 
 
-@router.delete("/DeleteMealUser/{id_UserFood}" ,tags=["MealUser"])
+@router.delete("/DeleteMealUser/{id_UserFood}", tags=["MealUser"])
 async def delete_mealUser(id_UserFood: str):
     return delete_meal(id_UserFood)
 
@@ -100,18 +100,18 @@ async def update_user_food(userFood_id: str, userFood_data: UserFood):
     return update_userFood_controller(userFood_id, userFood_data)
 
 
-@router.post("/CreateCategory/",tags=["Category"])
+@router.post("/CreateCategory/", tags=["Category"])
 async def category_log(category: Category):
     userCategoryLog(category)
     return {"message": "new category!"}
 
 
-@router.get("/GetCategoryUser/{user_id}" ,tags=["Category"])
+@router.get("/GetCategoryUser/{user_id}", tags=["Category"])
 async def get_category_user(user_id: str):
     return get_category(user_id)
 
 
-@router.put("/UpdateCategory/{category_id}" ,tags=["Category"])
+@router.put("/UpdateCategory/{category_id}", tags=["Category"])
 async def update_category(category_id: str, updated_category: Category):
     return update_category_controller(category_id, updated_category)
 
@@ -122,7 +122,7 @@ async def category_log(catFood: CategoryFood):
     return {"message": "new categoryFood!"}
 
 
-@router.get("/GetFoodsPerCategory/{id_Category}" ,tags=["CatFood"])
+@router.get("/GetFoodsPerCategory/{id_Category}", tags=["CatFood"])
 async def get_Food_Percategory(id_Category: str):
     return get_Food_perCat(id_Category)
 
@@ -133,12 +133,13 @@ async def delete_category_user(id_Category: str):
     return {"message": "Category Delete Succefully!"}
 
 
-@router.delete("/DeleteCatFood/{id_CatFood}" ,tags=["CatFood"] )
+@router.delete("/DeleteCatFood/{id_CatFood}", tags=["CatFood"])
 async def delete_catFood_user(id_CatFood: str):
     delete_Catfood(id_CatFood)
     return {"message": "CatFood Delete succefully!"}
 
-@router.post("/CreateTotCaloriesUser/",tags=["Food"])
+
+@router.post("/CreateTotCaloriesUser/", tags=["Food"])
 async def UserTotCal_log(userTotCal: UserTotCal):
     return createUserTotCal(userTotCal)
 
@@ -150,6 +151,7 @@ async def UpdateUserTotCal_log(calPerDay_id: str, calUpdate: CalUpdateModel):
         raise HTTPException(status_code=500, detail=response["error"])
     return {"message": "Update successful!"}
 
-@router.get("/GetTotCalUser/{user_id}",tags=["Food"])
+
+@router.get("/GetTotCalUser/{user_id}", tags=["Food"])
 async def get_Totcal_user(user_id: str):
     return get_TotCal(user_id)
