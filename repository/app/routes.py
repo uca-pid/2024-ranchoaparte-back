@@ -6,7 +6,7 @@ from app.controllers.food_controller import register_new_food, get_foods, get_fo
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
 from app.controllers.plate_controller import plateLog, get_plate_user, delete_plate,update_Plate
-from app.controllers.plateFood_controller import PlateFoodLog,update_PlateFood_controller,delete_PlateFood
+from app.controllers.plateFood_controller import PlateFoodLog,update_PlateFood_controller,delete_PlateFood,get_plateFood
 from app.controllers.drinkType_controller import register_new_drinkType,get_drinkTypes,get_drinkType_by_id
 from app.models.user import UserRegister, ResetPassword, UserForgotPassword, UserLogin, UpdateUserData
 from app.controllers.drink_controller import register_new_drink, get_drinks, get_drink_by_id
@@ -164,7 +164,7 @@ async def UpdateUserTotCal_log(calPerDay_id: str, calUpdate: CalUpdateModel):
 async def get_Totcal_user(user_id: str):
     return get_TotCal(user_id)
 ##PLATE ROUTES
-@router.post("/CreatePlate/{user_id}", tags=["Plate"])
+@router.post("/CreatePlate/", tags=["Plate"])
 async def plate_log(plate: Plate):
     return plateLog(plate)
 
@@ -182,13 +182,13 @@ async def delete_plate_user(id_plate: str):
     delete_plate(id_plate)
     return {"message": "plate Delete Succefully!"}
 ##PLATE FOOD
-@router.post("/CreatePlateFood/{user_id}", tags=["PlateFood"])
+@router.post("/CreatePlateFood/", tags=["PlateFood"])
 async def plateFood_log(plateFood: PlateFood):
     return PlateFoodLog(plateFood)
 
-# @router.get("/GetPlateFood/{plateFood_id}", tags=["PlateFood"])
-# async def get_plateFood_user(user_id: str):
-#     return get_plateFood_user(user_id)
+@router.get("/GetPlateFood/{plateFood_id}", tags=["PlateFood"])
+async def get_plateFood_user(plateFood_id: str):
+    return get_plateFood(plateFood_id)
 
 
 @router.put("/UpdatePlateFood/{id_PlateFood}", tags=["PlateFood"])

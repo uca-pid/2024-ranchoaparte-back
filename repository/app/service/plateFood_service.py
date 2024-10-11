@@ -9,24 +9,18 @@ def create_plateFood(plateFood_data):
         new_plateFood_ref = db.collection('PlateFood').document()
         new_plateFood_ref.set(plateFood_data_dict)
 
-        return {"message": "plateFood added successfully to user", "id": new_plateFood_ref.id}
+        return {"id": new_plateFood_ref.id}
     except Exception as e:
         return {"error": str(e)}
     
-# def get_user_plateFoods(id_user):
-#     try:
-#         user_plateFoods_query = db.collection(
-#             'plateFood').where('id_User', '==', id_user)
-#         user_plateFoods = user_plateFoods_query.stream()
-
-#         plateFood_list = []
-#         for plateFood in user_plateFoods:
-#             plateFood_dict = plateFood.to_dict()
-#             plateFood_dict['id'] = plateFood.id
-#             plateFood_list.append(plateFood_dict)
-#         return {"message": "List fetched successfully", "plateFoods": plateFood_list}
-#     except Exception as e:
-#         return {"error": str(e)}
+def get_user_plateFood(id_plate):
+    plate_food_collection = db.collection('PlateFood')
+    doc_ref = plate_food_collection.document(id_plate)
+    doc = doc_ref.get()
+    if doc.exists:
+        return doc.to_dict() 
+    else:
+        return None 
 
 
 def delete_plateFood_service(userplateFood_id):
