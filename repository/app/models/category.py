@@ -7,6 +7,8 @@ class Category(BaseModel):
     icon: str
     id_User: str
     foods: List[str]
+    plates: List[str]
+    drinks: List[str]
 
     class Config:
         # Esto facilita la conversión entre ORM (SQLAlchemy) y Pydantic.
