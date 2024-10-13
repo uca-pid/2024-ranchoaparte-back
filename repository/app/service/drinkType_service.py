@@ -29,3 +29,36 @@ def drinkType_by_id(drinkType_id):
         return {"drinkType": drinkType_doc.to_dict(), "message": "drinkType get successful"}
     except Exception as e:
         return {"error": str(e)}
+def getUserDrinkTypes(id_user):
+    try:
+        user_drinkType_query = db.collection('DrinkType').where('id_user', '==', id_user)
+        user_drinkType = user_drinkType_query.stream()
+
+        default_drinkType_query = db.collection('DrinkType').where('id_user', '==', 'default')
+        default_drinkType = default_drinkType_query.stream()
+
+
+        type_list = []
+
+        for drink_type in user_drinkType:
+            type_dict = drink_type.to_dict()
+            type_dict['id'] = drink_type.id
+            type_list.append(type_dict)
+
+        for drink_type in default_drinkType:
+            type_dict = drink_type.to_dict()
+            type_dict['id'] = drink_type.id
+            type_list.append(type_dict)
+
+        return {"message": "List fetched successfully", "drinkType": type_list}
+    except Exception as e:
+        return {"error": str(e)}
+def deleteDrinkType(drinktype_id):
+    try:
+        drinktype_ref = db.collection('DrinkType').document(drinktype_id)
+        drinktype_ref.delete()
+        return {"message": "user drinkType  delete successful"}
+    except Exception as e:
+        return {"error": str(e)}
+
+

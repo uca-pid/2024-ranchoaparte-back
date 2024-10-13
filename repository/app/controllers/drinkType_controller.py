@@ -1,4 +1,4 @@
-from app.service.drinkType_service import create_drinkType, drinkType, drinkType_by_id
+from app.service.drinkType_service import create_drinkType, drinkType, drinkType_by_id,getUserDrinkTypes,deleteDrinkType
 from app.models.drinkType import DrinkType
 from fastapi import HTTPException
 
@@ -17,6 +17,17 @@ def get_drinkTypes():
 
 def get_drinkType_by_id(drinkType_id: str):
     response = drinkType_by_id(drinkType_id)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": response}
+
+def UserDrinkTypes(user_id: str):
+    response = getUserDrinkTypes(user_id)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": response}
+def delete_DrinkType(drinkType_id):
+    response = deleteDrinkType(drinkType_id)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
     return {"message": response}

@@ -7,9 +7,9 @@ from app.controllers.category_controller import userCategoryLog, get_category, u
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
 from app.controllers.plate_controller import plateLog, get_plate_user, delete_plate,update_Plate
 from app.controllers.plateFood_controller import PlateFoodLog,update_PlateFood_controller,delete_PlateFood,get_plateFood
-from app.controllers.drinkType_controller import register_new_drinkType,get_drinkTypes,get_drinkType_by_id
+from app.controllers.drinkType_controller import register_new_drinkType,get_drinkTypes,get_drinkType_by_id, UserDrinkTypes,delete_DrinkType
 from app.models.user import UserRegister, ResetPassword, UserForgotPassword, UserLogin, UpdateUserData
-from app.controllers.drink_controller import register_new_drink, get_drinks, get_drink_by_id
+from app.controllers.drink_controller import register_new_drink, get_drinks, get_drink_by_id,deletedrink,Updatedrink
 # from app.controllers.user_controller import
 from app.models.catFood import CategoryFood
 from app.models.category import Category
@@ -211,9 +211,9 @@ async def register_drink(drink: Drink):
     return {"message": "drink log added!"}
 
 
-@router.get("/GetDrinks/", tags=["Drinks"])
-async def read_drink_logs():
-    return get_drinks()
+@router.get("/GetDrinks/{user_id}", tags=["Drinks"])
+async def read_drink_logs(user_id:str):
+    return get_drinks(user_id)
 
 
 @router.get("/DrinkById/{drink_id}", tags=["Drinks"])
@@ -225,8 +225,8 @@ async def register_drink(drinkType: DrinkType):
     # user_id = verify_token(token)
     # if not user_id:
     #      raise HTTPException(status_code=403, detail="Invalid token")
-    register_new_drinkType(drinkType)
-    return {"message": "drink log added!"}
+    response = register_new_drinkType(drinkType)
+    return response
 
 
 @router.get("/getDrinkType/", tags=["DrinkType"])
@@ -237,3 +237,19 @@ async def read_drink_logs():
 @router.get("/DrinkTypeByID/{drink_id}", tags=["DrinkType"])
 async def get_drinkType(drink_id: str):
     return get_drinkType_by_id(drink_id)
+
+@router.get("/getUserDrinkType/{user_id}", tags=["DrinkType"])
+async def get_drinkTypeUser(user_id: str):
+    return UserDrinkTypes(user_id)
+@router.delete("/DeleteDrink/{id_drink}", tags=["Drinks"])
+async def delete_drink_user(id_drink: str):
+    response = deletedrink(id_drink)
+    return {"message": response}
+@router.put("/UpdateDrink/{drink_id}", tags=["Drinks"])
+async def UpdateUserTotCal_log(drink_id: str, drinkUpdate: Drink):
+    response = Updatedrink(drink_id, drinkUpdate)
+    return {"message": response}
+@router.delete("/DeleteDrinkType/{drinkType_id}", tags=["DrinkType"])
+async def deleteDrinktype(drinkType_id: str):
+    return delete_DrinkType(drinkType_id)
+
