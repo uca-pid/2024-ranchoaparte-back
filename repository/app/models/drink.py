@@ -6,6 +6,7 @@ class Drink(BaseModel):
     amount_sugar: int
     amount_cafeine: int 
     calories_portion: int
-    portion: int
+    measure_portion: int
     measure: str
     typeOfDrink: str
+    id_User: str
