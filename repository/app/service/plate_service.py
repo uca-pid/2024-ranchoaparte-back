@@ -32,12 +32,10 @@ def get_user_plates(id_user):
 
 def delete_Plate_service(userPlate_id):
     try:
-        plate_ref = db.collection('Plate').document(userPlate_id)
-        # Check if the document exists before deleting
-        if not plate_ref.get().exists:
-            return {"error": "Plate not found"}
-        plate_ref.delete()
-        return {"message": "User Plate deleted successfully"}
+        # Referencia al documento del foodo
+        food_ref = db.collection('Plate').document(userPlate_id)
+        food_ref.delete()
+        return {"message": "user  plate  delete successful"}
     except Exception as e:
         return {"error": str(e)}
 
