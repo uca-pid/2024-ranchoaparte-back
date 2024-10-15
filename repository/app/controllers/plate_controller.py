@@ -1,4 +1,4 @@
-from app.service.plate_service import create_plate,get_user_plates,delete_Plate_service,update_Plate
+from app.service.plate_service import create_plate,get_user_plates,delete_Plate_service,update_Plate,getPlateByID
 from app.models.plate import Plate
 from fastapi import HTTPException
 from datetime import datetime
@@ -25,6 +25,11 @@ def delete_plate(userPlate_id: str):
 
 def update_plate_controller(userPlate_id: str, Plate_data: Plate):
     response = update_Plate(userPlate_id, Plate_data)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"message": response}
+def get_platebyID(plate_id: str):
+    response = getPlateByID(plate_id)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
     return {"message": response}

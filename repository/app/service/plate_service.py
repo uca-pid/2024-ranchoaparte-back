@@ -32,9 +32,9 @@ def get_user_plates(id_user):
 
 def delete_Plate_service(userPlate_id):
     try:
-        # Referencia al documento del foodo
-        food_ref = db.collection('Plate').document(userPlate_id)
-        food_ref.delete()
+        # Referencia al documento del plateo
+        plate_ref = db.collection('Plate').document(userPlate_id)
+        plate_ref.delete()
         return {"message": "user  plate  delete successful"}
     except Exception as e:
         return {"error": str(e)}
@@ -47,5 +47,13 @@ def update_Plate(userPlate_id, plate_data):
         Plate_ref.update(updated_data)
 
         return {"message": "Plate updated successfully"}
+    except Exception as e:
+        return {"error": str(e)}
+def getPlateByID (plate_id):
+    try:
+        # Referencia al documento del plateo
+        plate_ref = db.collection('Plate').document(plate_id)
+        plate_doc =plate_ref.get()
+        return {"plate": plate_doc.to_dict()}
     except Exception as e:
         return {"error": str(e)}
