@@ -178,9 +178,8 @@ async def update_category(plate_id: str, updated_Plate: Plate):
     return update_Plate(plate_id, updated_Plate)
 
 @router.delete("/DeletePlate/{id_Plate}", tags=["Plate"])
-async def delete_plate_user(id_plate: str):
-    delete_plate(id_plate)
-    return {"message": "plate Delete Succefully!"}
+async def delete_plate_user(id_Plate: str):
+    return delete_plate(id_Plate)
 ##PLATE FOOD
 @router.post("/CreatePlateFood/", tags=["PlateFood"])
 async def plateFood_log(plateFood: PlateFood):

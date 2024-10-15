@@ -20,6 +20,7 @@ def delete_plate(userPlate_id: str):
     response = delete_Plate_service(userPlate_id)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
+    return  response
 
 
 def update_plate_controller(userPlate_id: str, Plate_data: Plate):
