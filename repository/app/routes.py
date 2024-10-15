@@ -5,7 +5,7 @@ from app.controllers.userTotCal_controller import updateDailyCalories_controller
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
-from app.controllers.plate_controller import plateLog, get_plate_user, delete_plate,update_Plate
+from app.controllers.plate_controller import plateLog, get_plate_user, delete_plate,update_Plate,get_platebyID
 from app.controllers.plateFood_controller import PlateFoodLog,update_PlateFood_controller,delete_PlateFood,get_plateFood
 from app.controllers.drinkType_controller import register_new_drinkType,get_drinkTypes,get_drinkType_by_id, UserDrinkTypes,delete_DrinkType
 from app.models.user import UserRegister, ResetPassword, UserForgotPassword, UserLogin, UpdateUserData
@@ -169,8 +169,11 @@ async def plate_log(plate: Plate):
     return plateLog(plate)
 
 @router.get("/GetPlatesUser/{user_id}", tags=["Plate"])
-async def get_category_user(user_id: str):
+async def get_plateuser(user_id: str):
     return get_plate_user(user_id)
+@router.get("/GetPlateByID/{plate_id}", tags=["Plate"])
+async def get_PlateId(plate_id: str):
+    return get_platebyID(plate_id)
 
 
 @router.put("/UpdatePlate/{plate_id}", tags=["Plate"])
