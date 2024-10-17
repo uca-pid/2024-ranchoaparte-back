@@ -54,8 +54,8 @@ def GroupedDrinks(user_id):
         user_drinks_query = db.collection('Drink').where('id_User', '==', user_id)
         user_drinks = user_drinks_query.stream()
 
-        # Fetch all drink types
-        drink_types_query = db.collection('DrinkType').where('id_user', '==', user_id)
+        # Fetch drink types for both the user and the default types
+        drink_types_query = db.collection('DrinkType').where('id_user', 'in', [user_id, 'default'])
         drink_types = drink_types_query.stream()
 
         # Create a dictionary to group the drinks by type
@@ -90,4 +90,5 @@ def GroupedDrinks(user_id):
         return {"message": "List fetched successfully", "Drinks": list(grouped_drinks.values())}
     except Exception as e:
         return {"error": str(e)}
+
 
