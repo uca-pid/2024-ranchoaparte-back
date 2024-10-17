@@ -1,4 +1,4 @@
-from app.service.drink_service import create_drink, drinks, drink_by_id,delete_drink,update_Drink
+from app.service.drink_service import create_drink, drinks, drink_by_id,delete_drink,update_Drink,GroupedDrinks
 from app.models.drink import Drink 
 from fastapi import HTTPException
 
@@ -26,6 +26,11 @@ def deletedrink(drink_id: str):
         raise HTTPException(status_code=500, detail=response["error"])
 def Updatedrink(drink_id: str, UpdatedData:Drink):
     response= update_Drink(drink_id, UpdatedData)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return response
+def Grouped_Drinks(drink_id: str):
+    response= GroupedDrinks(drink_id)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
     return response
