@@ -9,7 +9,7 @@ from app.controllers.plate_controller import plateLog, get_plate_user, delete_pl
 from app.controllers.plateFood_controller import PlateFoodLog,update_PlateFood_controller,delete_PlateFood,get_plateFood
 from app.controllers.drinkType_controller import register_new_drinkType,get_drinkTypes,get_drinkType_by_id, UserDrinkTypes,delete_DrinkType
 from app.models.user import UserRegister, ResetPassword, UserForgotPassword, UserLogin, UpdateUserData
-from app.controllers.drink_controller import register_new_drink, get_drinks, get_drink_by_id,deletedrink,Updatedrink
+from app.controllers.drink_controller import register_new_drink, get_drinks, get_drink_by_id,deletedrink,Updatedrink,Grouped_Drinks
 # from app.controllers.user_controller import
 from app.models.catFood import CategoryFood
 from app.models.category import Category
@@ -254,4 +254,7 @@ async def UpdateUserTotCal_log(drink_id: str, drinkUpdate: Drink):
 @router.delete("/DeleteDrinkType/{drinkType_id}", tags=["DrinkType"])
 async def deleteDrinktype(drinkType_id: str):
     return delete_DrinkType(drinkType_id)
+@router.get("/getUserGroupDrinkType/{user_id}", tags=["Drink"])
+async def get_GroupeddrinkTypeUser(user_id: str):
+    return Grouped_Drinks(user_id)
 
