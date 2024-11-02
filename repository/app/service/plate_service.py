@@ -57,3 +57,41 @@ def getPlateByID (plate_id):
         return {"plate": plate_doc.to_dict()}
     except Exception as e:
         return {"error": str(e)}
+    
+def get_public_plates():
+    try:
+        # Query to get all public plates
+        user_Plates_query = db.collection('Plate').where('public', '==', True)
+        user_Plates = user_Plates_query.stream()
+
+        Plate_list = []
+        for Plate in user_Plates:
+            Plate_dict = Plate.to_dict()
+            Plate_dict['id'] = Plate.id
+            
+            # Replace ingredientId with full ingredient details from Food table
+            enriched_ingredients = []
+            for ingredient in Plate_dict.get('ingredients', []):
+                food_doc = db.collection('Food').document(ingredient['ingredientId']).get()
+                if food_doc.exists:
+                    food_data = food_doc.to_dict()
+                    ingredient.update({
+                        "name": food_data.get("name"),
+                        "calories_portion": food_data.get("calories_portion"),
+                        "measure": food_data.get("measure"),
+                        "measure_portion": food_data.get("measure_portion")
+                    })
+                enriched_ingredients.append(ingredient)
+            Plate_dict['ingredients'] = enriched_ingredients
+
+            # Add reviews for the current plate
+            reviews_query = db.collection('Review').where('plate_Id', '==', Plate_dict['id'])
+            reviews = reviews_query.stream()
+            Plate_dict['reviews'] = [{"id": review.id, **review.to_dict()} for review in reviews]
+
+            Plate_list.append(Plate_dict)
+
+        return Plate_list
+    except Exception as e:
+        return {"error": str(e)}
+

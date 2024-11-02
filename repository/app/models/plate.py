@@ -11,4 +11,5 @@ class Plate(BaseModel):
     ingredients: List[PlateFood]
     calories_portion: float
     image: str
+    public: bool
 

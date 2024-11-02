@@ -5,9 +5,11 @@ from app.controllers.userTotCal_controller import updateDailyCalories_controller
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
-from app.controllers.plate_controller import plateLog, get_plate_user, delete_plate,update_Plate,get_platebyID
+from app.controllers.plate_controller import plateLog, get_plate_user, delete_plate,update_Plate,get_platebyID,get_publicPlates
 from app.controllers.plateFood_controller import PlateFoodLog,update_PlateFood_controller,delete_PlateFood,get_plateFood
 from app.controllers.drinkType_controller import register_new_drinkType,get_drinkTypes,get_drinkType_by_id, UserDrinkTypes,delete_DrinkType
+from app.controllers.review_controller import reviewLog,UpdateReview,get_plateReviews
+
 from app.models.user import UserRegister, ResetPassword, UserForgotPassword, UserLogin, UpdateUserData
 from app.controllers.drink_controller import register_new_drink, get_drinks, get_drink_by_id,deletedrink,Updatedrink,Grouped_Drinks
 # from app.controllers.user_controller import
@@ -17,6 +19,7 @@ from app.models.userFood import UserFood
 from app.models.plate import Plate
 from app.models.drink import Drink
 from app.models.drinkType import DrinkType
+from app.models.review import Review
 from app.models.plateFood import PlateFood
 from app.models.userTotCal import UserTotCal, CalUpdateModel
 from app.controllers.foodUser_controller import update_userFood_controller, userFoodLog, get_meals_user, delete_meal
@@ -174,6 +177,9 @@ async def get_plateuser(user_id: str):
 @router.get("/GetPlateByID/{plate_id}", tags=["Plate"])
 async def get_PlateId(plate_id: str):
     return get_platebyID(plate_id)
+@router.get("/GetPlatePublicPlates/", tags=["Plate"])
+async def publicPlates():
+    return get_publicPlates()
 
 
 @router.put("/UpdatePlate/{plate_id}", tags=["Plate"])
@@ -258,3 +264,14 @@ async def deleteDrinktype(drinkType_id: str):
 async def get_GroupeddrinkTypeUser(user_id: str):
     return Grouped_Drinks(user_id)
 
+@router.post("/newReview/", tags=["Review"])
+async def register_newReview(review: Review):
+    response = reviewLog(review)
+    return response
+@router.put("/UpdateReview/{review_id}", tags=["Review"])
+async def Update_Review(review_id: str, ReviewUpdate: Review):
+    response = UpdateReview(review_id, ReviewUpdate)
+    return {"message": response}
+@router.get("/PlateReviews/", tags=["Review"])
+async def get_reviews():
+    return get_plateReviews()
