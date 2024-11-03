@@ -10,7 +10,7 @@ def create_plate(plate_data):
         new_Plate_ref = db.collection('Plate').document()
         new_Plate_ref.set(plate_data_dict)
 
-        return {"message": "Plate added successfully to user", "id": new_Plate_ref.id}
+        return  new_Plate_ref.id
     except Exception as e:
         return {"error": str(e)}
     

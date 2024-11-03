@@ -8,7 +8,7 @@ def plateLog(plate: Plate):
     response = create_plate(plate)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
-    return {"message": "User Plate registered successfully"}
+    return {"id": response}
 def get_plate_user(user_id: str):
     response = get_user_plates(user_id)
     if "error" in response:
