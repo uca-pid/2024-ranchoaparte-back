@@ -10,18 +10,14 @@ def createUserTotCal_service(userTotCal):
     except Exception as e:
         return {"error": str(e)}
 
-def updateDailyCalories(calPerDay_id, calUpdate):
-    usertotCal_ref = db.collection('UserTotalCal').document(calPerDay_id)
+def updateDailyCalories(calPerDay_id, macros_data):
     try:
-        # Update only the totCal field
-        usertotCal_ref.update({
-            'totCal': calUpdate.calUpdate
-        })
-        print(f"Updated total calories to {calUpdate} for document {calPerDay_id}")
-        return {"message": f"Updated total calories to {calUpdate}."}
+        updated_data = macros_data.dict()
+        Macros_ref = db.collection('UserTotalCal').document(calPerDay_id)
+        Macros_ref.update(updated_data)
+
+        return {"message": "Macros updated successfully"}
     except Exception as e:
-        # Catch and return the error in a structured format
-        print(f"An error occurred: {e}")
         return {"error": str(e)}
 
 def get_totalCAL(user_id):

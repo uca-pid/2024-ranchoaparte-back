@@ -156,7 +156,7 @@ async def UserTotCal_log(userTotCal: UserTotCal):
 
 
 @router.put("/UpdateTotCaloriesUser/{calPerDay_id}", tags=["Food"])
-async def UpdateUserTotCal_log(calPerDay_id: str, calUpdate: CalUpdateModel):
+async def UpdateUserTotCal_log(calPerDay_id: str, calUpdate: UserTotCal):
     response = updateDailyCalories_controller(calPerDay_id, calUpdate)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])

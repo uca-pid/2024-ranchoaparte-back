@@ -3,7 +3,7 @@ from app.models.userTotCal import CalUpdateModel, UserTotCal
 from fastapi import HTTPException
 from datetime import datetime
 
-def updateDailyCalories_controller(calPerDay_id, calUpdate: CalUpdateModel):
+def updateDailyCalories_controller(calPerDay_id, calUpdate: UserTotCal):
     response = updateDailyCalories(calPerDay_id, calUpdate)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
