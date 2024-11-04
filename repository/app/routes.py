@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from app.models.food import Food
 from app.controllers.user_controller import update_user_info, delete_user_by_id, user_by_id, resetPassword
-from app.controllers.userTotCal_controller import updateDailyCalories_controller, createUserTotCal, get_TotCal
+from app.controllers.userTotCal_controller import updateDailyCalories_controller, createUserTotCal, get_TotCal, get_streak
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
 from app.controllers.plate_controller import plateLog, get_plate_user, delete_plate,update_Plate,get_platebyID,get_publicPlates
 from app.controllers.plateFood_controller import PlateFoodLog,update_PlateFood_controller,delete_PlateFood,get_plateFood
 from app.controllers.drinkType_controller import register_new_drinkType,get_drinkTypes,get_drinkType_by_id, UserDrinkTypes,delete_DrinkType
-from app.controllers.review_controller import reviewLog,UpdateReview,get_plateReviews
+from app.controllers.review_controller import reviewLog,UpdateReview,get_plateReviews,get_fiveStarReview
 
 from app.models.user import UserRegister, ResetPassword, UserForgotPassword, UserLogin, UpdateUserData
 from app.controllers.drink_controller import register_new_drink, get_drinks, get_drink_by_id,deletedrink,Updatedrink,Grouped_Drinks
@@ -275,3 +275,9 @@ async def Update_Review(review_id: str, ReviewUpdate: Review):
 @router.get("/PlateReviews/", tags=["Review"])
 async def get_reviews():
     return get_plateReviews()
+@router.get("/Streak/{user_id}", tags=["gaminfication"])
+async def get_streakuser(user_id:str):
+    return get_streak(user_id)
+@router.get("/fivestarReview/{user_id}", tags=["gaminfication"])
+async def get_fivestarReviewuser(user_id:str):
+    return get_fiveStarReview(user_id)
