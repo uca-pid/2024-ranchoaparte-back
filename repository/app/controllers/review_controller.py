@@ -1,4 +1,4 @@
-from app.service.review_service import create_review,update_Review,get_plate_reviews
+from app.service.review_service import create_review,update_Review,get_plate_reviews,getamountFiveStarReviews
 from app.models.review import Review
 from fastapi import HTTPException
 from datetime import datetime
@@ -21,3 +21,8 @@ def get_plateReviews():
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
     return {"Review": response}
+def get_fiveStarReview(user_id: str):
+    response = getamountFiveStarReviews(user_id)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["error"])
+    return {"amount": response}
