@@ -1,5 +1,5 @@
 from app.service.user_service import create_user, delete_user, reset_password, get_user_by_id, get_user_by_email, send_password_reset_email, login_user, get_current_user_service, update_user
-from app.models.user import UserLogin, ResetPassword, UserRegister, UserForgotPassword, UpdateUserData
+from app.models.user import UserGoals, UserLogin, ResetPassword, UserRegister, UserForgotPassword, UpdateUserData
 from fastapi import HTTPException, Request
 
 

@@ -1,7 +1,16 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import List, Optional
 
 # Modelo para registrar un nuevo Food
+
+
+class UserGoals(BaseModel):
+    calories: int
+    sodium: int
+    fats: int
+    carbohydrates: int
+    protein: int
 
 
 class UserRegister(BaseModel):
@@ -12,6 +21,7 @@ class UserRegister(BaseModel):
     weight: float = Field(..., ge=0)
     height: float = Field(..., ge=0)
     birthDate: datetime
+    goals: Optional[UserGoals]
 
 
 class UserForgotPassword(BaseModel):
@@ -35,3 +45,4 @@ class UpdateUserData(BaseModel):
     weight: float
     height: float
     birthDate: datetime
+    goals: UserGoals
