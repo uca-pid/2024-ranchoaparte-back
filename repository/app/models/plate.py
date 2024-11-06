@@ -18,4 +18,4 @@ class Plate(BaseModel):
     protein_portion: float
     image: str
     public: bool = False
-    verified: str = ""
+    verified: int = 0

@@ -183,18 +183,25 @@ def update_uservalidation(user_id):
         print("cantidad de platos", count_verified_plates)
 
         if count_verified_plates >= 5:
-            level = "advanced"
+            level = 2
         elif count_verified_plates >= 3:
-            level = "basic"
+            level = 1
+        else:
+            level = 0
 
         user = get_user_by_id(user_id)
-        user['validation'] = level
-        user_ref = db.collection('User').where(
-            'id_user', '==', user_id).stream()
-        for doc in user_ref:
-            doc.reference.update(user)
-        
-        return {"Updated"}
+        if level == user['validation']:
+            return {"Updated"}
+        else:
+            
+            user['validation'] = level
+            user_ref = db.collection('User').where(
+                'id_user', '==', user_id).stream()
+            for doc in user_ref:
+                doc.reference.update(user)
+            
+            
+            return {"Updated"}
     except Exception as e:
         return {"error": str(e)}
 
@@ -211,5 +218,21 @@ def get_allusers():
 
     except Exception as e:
         return {"error": str(e)}
+def user_notify(user, new_level):
+
+    last_notified_level = user['validation']
+    if last_notified_level != new_level:
+        if new_level > last_notified_level:
+            message = f"Congratulations! You've reached {new_level} verification level."
+        else:
+            message = f"Your verification level has changed to {new_level}."
+
+        show_notification_to_user(user['id_user'], message)
+
+def show_notification_to_user(user_id, message):
+    # Implement this function according to your app's notification system
+    print(f"Notification for {user_id}: {message}")
+
+
 
 

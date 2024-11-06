@@ -27,20 +27,33 @@ async def verify_token(token: str):
         return decoded_token
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid token")
-def migrate_plates_to_add_verified():
-    plates_ref = db.collection("User")
-    plates = plates_ref.stream()
+def migrate_user_verified_to_int():
+    users_ref = db.collection("Plate")
+    users = users_ref.stream()
 
-    for plate in plates:
-        plate_data = plate.to_dict()
+    for user in users:
+        user_data = user.to_dict()
         
-        # Check if `verified` field is missing
-        if 'validation' not in plate_data:
-            print(f"Updating plate {plate.id} to add 'verified' field.")
-            plates_ref.document(plate.id).update({"validation": ""})  # Set default value
+        # Check if `verified` field exists and is of type str
+        if 'verified' in user_data and isinstance(user_data['verified'], str):
+            try:
+                # Attempt to convert `verified` from str to int
+                new_verified = int(user_data['verified'])
+            except ValueError:
+                # If conversion fails, set a default value (e.g., 0)
+                new_verified = 0
             
-    print("Migration completed for all plates.")
+            # Update the `verified` field with the new integer value
+            users_ref.document(user.id).update({"verified": new_verified})
+            print(f"Updated user {user.id} verified to integer: {new_verified}")
+        elif 'verified' not in user_data:
+            # If `verified` field is missing, set a default integer value
+            users_ref.document(user.id).update({"verified": 0})
+            print(f"Added verified field for user {user.id} with default value: 0")
+    
+    print("Migration completed for all users.")
 
 # Run the migration
-migrate_plates_to_add_verified()
+migrate_user_verified_to_int()
+
 

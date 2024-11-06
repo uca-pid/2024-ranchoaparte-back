@@ -113,16 +113,17 @@ def update_user_platestoverified(user_id):
     try:
         plates = get_user_plates(user_id)["Plates"]
         count_4_star_plates = getamountFiveStarReviews(user_id)
-        level = ""
+        level = 0
         if count_4_star_plates >= 5:
-            level = "advanced"
+            level = 2
         elif count_4_star_plates >= 3:
-            level = "basic"
+            level = 1
         else:
-            level = ""
+            level = 0
 
         for plate in plates:
-            plate['verified'] = level
+            if plate['verified'] != level:
+                plate['verified'] = level
 
             Plate_ref = db.collection('Plate').document(plate["id"])
             Plate_ref.update(plate)
