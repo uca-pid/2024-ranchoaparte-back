@@ -11,6 +11,8 @@ class UserGoals(BaseModel):
     fats: int
     carbohydrates: int
     protein: int
+    caffeine: int
+    sugar: int
 
 
 class UserRegister(BaseModel):

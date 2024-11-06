@@ -1,10 +1,11 @@
 from pydantic import BaseModel, Field
 from typing import List
 
+
 class Drink(BaseModel):
-    name : str
-    amount_sugar: int
-    amount_cafeine: int 
+    name: str
+    sugar_portion: int
+    cafeine_portion: int
     calories_portion: int
     measure_portion: int
     measure: str
