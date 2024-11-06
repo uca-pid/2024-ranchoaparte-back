@@ -3,6 +3,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from app.service.review_service import getamountFiveStarReviews
+from datetime import datetime
 
 
 
@@ -180,7 +181,6 @@ def update_uservalidation(user_id):
     try:
         count_verified_plates = getamountFiveStarReviews(user_id)
         level = ""
-        print("cantidad de platos", count_verified_plates)
 
         if count_verified_plates >= 5:
             level = 2
@@ -193,10 +193,11 @@ def update_uservalidation(user_id):
         if level == user['validation']:
             return {"Updated"}
         else:
-            
-            user['validation'] = level
             user_ref = db.collection('User').where(
                 'id_user', '==', user_id).stream()
+            user_notify(user,level)
+            user['validation'] = level
+
             for doc in user_ref:
                 doc.reference.update(user)
             
@@ -218,20 +219,41 @@ def get_allusers():
 
     except Exception as e:
         return {"error": str(e)}
+
+
 def user_notify(user, new_level):
+    last_notified_level = user.get('validation', 0)
+    user_id = user.get('id_user')
+    if user_id is None:
+        print("Error: User ID not found.")
+        return {"error": "User ID not found"}
 
-    last_notified_level = user['validation']
-    if last_notified_level != new_level:
-        if new_level > last_notified_level:
-            message = f"Congratulations! You've reached {new_level} verification level."
-        else:
-            message = f"Your verification level has changed to {new_level}."
+    if new_level > last_notified_level:
+        message = f"Congratulations! You've reached level {new_level} verification."
+    else:
+        message = f"Your verification level has changed to {new_level}."
 
-        show_notification_to_user(user['id_user'], message)
+    # Use datetime.now() to test if SERVER_TIMESTAMP is the issue
+    data = {
+        'user_id': user_id,
+        'message': message,
+        'timestamp': datetime.now(),  # Temporarily replace with datetime.now()
+        'is_read': False
+    }
 
-def show_notification_to_user(user_id, message):
-    # Implement this function according to your app's notification system
-    print(f"Notification for {user_id}: {message}")
+
+    try:
+        new_review_ref = db.collection('UserNotifications').document()
+        new_review_ref.set(data)
+
+    except Exception as e:
+
+        return {"error": str(e)}
+
+    return {"notification": "Notification sent"}
+
+    
+
 
 
 

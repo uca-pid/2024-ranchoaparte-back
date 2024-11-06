@@ -31,7 +31,6 @@ def get_totalCAL(user_id):
         totCal_list = []
         for totCal in user_totCal:
             totCal_dict = totCal.to_dict()
-            print(totCal_dict)
             totCal_dict['id'] = totCal.id
             totCal_list.append(totCal_dict)
         sorted_totCal_list = sorted(totCal_list, key=lambda x: x['day'])

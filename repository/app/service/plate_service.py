@@ -48,10 +48,8 @@ def update_Plate(userPlate_id, plate_data):
         updated_data = plate_data.dict()
         Plate_ref = db.collection('Plate').document(userPlate_id)
         Plate_ref.update(updated_data)
-        print("ACTUALIZADO")
         return {"message": "Plate updated successfully"}
     except Exception as e:
-        print(e)
         return {"error": str(e)}
         
 
@@ -132,6 +130,26 @@ def update_user_platestoverified(user_id):
 
     except Exception as e:
         return {"error": str(e)}
+def get_public_plates_notUser(user_id):
+    try:
+        # Query to get all public plates
+        user_Plates_query = db.collection('Plate').where('public', '==', True)
+        user_Plates = user_Plates_query.stream()
+
+        Plate_list = []
+        for Plate in user_Plates:
+            Plate_dict = Plate.to_dict()
+            
+            # Check if the plate does not belong to the provided user_id
+            if Plate_dict.get('id_User') != user_id:
+                Plate_dict['id'] = Plate.id
+                Plate_list.append(Plate_dict)
+                
+        return Plate_list
+    
+    except Exception as e:
+        return {"error": str(e)}
+
 
 
 
