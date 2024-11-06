@@ -319,7 +319,7 @@ def scheduled_verification_task():
     users = get_all_Users()
     for user in users:
         update_user_plates_to_verified(user['id_user'])  # Access 'id_user' using dictionary key
-        # update_user_validation(user['id_user'])
+        update_user_validation(user['id_user'])
 @router.get("/getUserNotifications/{user_id}",tags=["notis"] )
 def getUser_Notifications(user_id: str):
     return getNotis(user_id)
