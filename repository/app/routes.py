@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from app.models.food import Food
-from app.controllers.user_controller import update_user_info, delete_user_by_id, user_by_id, resetPassword
+from app.controllers.user_controller import update_user_info, delete_user_by_id, user_by_id, resetPassword,update_user_validation,get_all_Users
 from app.controllers.userTotCal_controller import updateDailyCalories_controller, createUserTotCal, get_TotCal, get_streak
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
 from app.controllers.catFood_controller import CategoryFoodLog, get_Food_perCat, delete_Catfood, delete_AllCatfoodByCategory
-from app.controllers.plate_controller import plateLog, get_plate_user, delete_plate, update_Plate, get_platebyID, get_publicPlates
+from app.controllers.plate_controller import update_user_plates_to_verified,plateLog, get_plate_user, delete_plate, update_Plate, get_platebyID, get_publicPlates
 from app.controllers.plateFood_controller import PlateFoodLog, update_PlateFood_controller, delete_PlateFood, get_plateFood
 from app.controllers.drinkType_controller import register_new_drinkType, get_drinkTypes, get_drinkType_by_id, UserDrinkTypes, delete_DrinkType
 from app.controllers.review_controller import reviewLog, UpdateReview, get_plateReviews, get_fiveStarReview
@@ -313,3 +313,14 @@ async def get_streakuser(user_id: str):
 @router.get("/fivestarReview/{user_id}", tags=["gaminfication"])
 async def get_fivestarReviewuser(user_id: str):
     return get_fiveStarReview(user_id)
+
+@router.get("/updateUsersandPlateVerification/", tags=["gamification"])
+def scheduled_verification_task():
+    update_user_plates_to_verified('x1oj6bRqCVPUITkX832gdpGBDPH2')
+    return update_user_validation('x1oj6bRqCVPUITkX832gdpGBDPH2')
+    # users = get_all_Users()
+    # for user in users:
+    #     print(user['id_user'])
+    #     update_user_plates_to_verified(user['id_user'])  # Access 'id_user' using dictionary key
+    #     # update_user_validation(user['id_user'])
+

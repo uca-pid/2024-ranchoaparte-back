@@ -2,6 +2,8 @@ from ..config import db, auth, verify_token
 import requests
 import os
 from dotenv import load_dotenv
+from app.service.review_service import getamountFiveStarReviews
+
 
 
 load_dotenv()
@@ -162,9 +164,11 @@ def update_user(user_id, user_data):
 
         for doc in user_ref:
             doc.reference.update(updated_data)
+            print("User data updated successfully")
             return {"message": "User data updated successfully"}
 
     except Exception as e:
+        print(e)
         return {"error": str(e)}
 
 
@@ -172,3 +176,40 @@ def get_current_user_service(request):
     token = request.headers.get('Authorization').split("Bearer ")[1]
     decoded_token = verify_token(token)
     return decoded_token
+def update_uservalidation(user_id):
+    try:
+        count_verified_plates = getamountFiveStarReviews(user_id)
+        level = ""
+        print("cantidad de platos", count_verified_plates)
+
+        if count_verified_plates >= 5:
+            level = "advanced"
+        elif count_verified_plates >= 3:
+            level = "basic"
+
+        user = get_user_by_id(user_id)
+        user['validation'] = level
+        user_ref = db.collection('User').where(
+            'id_user', '==', user_id).stream()
+        for doc in user_ref:
+            doc.reference.update(user)
+        
+        return {"Updated"}
+    except Exception as e:
+        return {"error": str(e)}
+
+def get_allusers():
+    try:
+        users_ref = db.collection('User').stream()
+        users = []
+
+        for doc in users_ref:
+            user_data = doc.to_dict()
+            users.append(user_data)
+
+        return users
+
+    except Exception as e:
+        return {"error": str(e)}
+
+

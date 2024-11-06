@@ -17,4 +17,5 @@ class Plate(BaseModel):
     fats_portion: float
     protein_portion: float
     image: str
-    public: bool
+    public: bool = False
+    verified: str = ""

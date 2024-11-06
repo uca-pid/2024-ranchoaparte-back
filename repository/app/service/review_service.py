@@ -44,7 +44,7 @@ def getamountFiveStarReviews(id_user):
 
         # Edge case: If user has no plates
         if not user_plate_ids:
-            return {"message": "User has no plates", "five_star_plates": 0}
+            return 0
 
         # Step 2: Count five-star reviews for user's plates
         five_star_count = 0
@@ -59,7 +59,7 @@ def getamountFiveStarReviews(id_user):
                     five_star_count += 1
                     break  # Count each plate only once for 4.5+ rating
 
-        return {"five_star_plates": five_star_count}
+        return five_star_count
     
     except Exception as e:
         return {"error": str(e)}

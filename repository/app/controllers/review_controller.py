@@ -25,4 +25,4 @@ def get_fiveStarReview(user_id: str):
     response = getamountFiveStarReviews(user_id)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
-    return {"amount": response}
+    return response

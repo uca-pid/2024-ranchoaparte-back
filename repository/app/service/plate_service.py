@@ -1,5 +1,6 @@
 from ..config import db
 from datetime import datetime, timedelta
+from app.service.review_service import getamountFiveStarReviews
 
 
 def create_plate(plate_data):
@@ -47,10 +48,12 @@ def update_Plate(userPlate_id, plate_data):
         updated_data = plate_data.dict()
         Plate_ref = db.collection('Plate').document(userPlate_id)
         Plate_ref.update(updated_data)
-
+        print("ACTUALIZADO")
         return {"message": "Plate updated successfully"}
     except Exception as e:
+        print(e)
         return {"error": str(e)}
+        
 
 
 def getPlateByID(plate_id):
@@ -106,3 +109,28 @@ def get_public_plates():
         return Plate_list
     except Exception as e:
         return {"error": str(e)}
+def update_user_platestoverified(user_id):
+    try:
+        plates = get_user_plates(user_id)["Plates"]
+        count_4_star_plates = getamountFiveStarReviews(user_id)
+        level = ""
+        if count_4_star_plates >= 5:
+            level = "advanced"
+        elif count_4_star_plates >= 3:
+            level = "basic"
+        else:
+            level = ""
+
+        for plate in plates:
+            plate['verified'] = level
+
+            Plate_ref = db.collection('Plate').document(plate["id"])
+            Plate_ref.update(plate)
+
+        return "Plate validation updated successfully"
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
+

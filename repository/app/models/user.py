@@ -22,6 +22,7 @@ class UserRegister(BaseModel):
     height: float = Field(..., ge=0)
     birthDate: datetime
     goals: Optional[UserGoals]
+    validation: str = ''
 
 
 class UserForgotPassword(BaseModel):

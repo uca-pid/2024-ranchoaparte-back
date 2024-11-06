@@ -27,4 +27,20 @@ async def verify_token(token: str):
         return decoded_token
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid token")
+def migrate_plates_to_add_verified():
+    plates_ref = db.collection("User")
+    plates = plates_ref.stream()
+
+    for plate in plates:
+        plate_data = plate.to_dict()
+        
+        # Check if `verified` field is missing
+        if 'validation' not in plate_data:
+            print(f"Updating plate {plate.id} to add 'verified' field.")
+            plates_ref.document(plate.id).update({"validation": ""})  # Set default value
+            
+    print("Migration completed for all plates.")
+
+# Run the migration
+migrate_plates_to_add_verified()
 
