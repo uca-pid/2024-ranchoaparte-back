@@ -162,6 +162,7 @@ def update_user(user_id, user_data):
         updated_data = user_data.dict()
         user_ref = db.collection('User').where(
             'id_user', '==', user_id).stream()
+        print(updated_data)
 
         for doc in user_ref:
             doc.reference.update(updated_data)

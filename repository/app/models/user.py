@@ -50,3 +50,5 @@ class UpdateUserData(BaseModel):
     height: float
     birthDate: datetime
     goals: UserGoals
+    validation: int
+    achivements: List[int]
