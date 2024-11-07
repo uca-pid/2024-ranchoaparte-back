@@ -3,8 +3,8 @@ from typing import List
 
 class Drink(BaseModel):
     name : str
-    amount_sugar: int
-    amount_cafeine: int 
+    sugar_portion: int
+    caffeine_portion: int 
     calories_portion: int
     measure_portion: int
     measure: str

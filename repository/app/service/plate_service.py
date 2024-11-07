@@ -59,7 +59,7 @@ def getPlateByID(plate_id):
         # Referencia al documento del plateo
         plate_ref = db.collection('Plate').document(plate_id)
         plate_doc = plate_ref.get()
-        return {"plate": plate_doc.to_dict()}
+        return {"plate": plate_doc.to_dict(), "message": "plate get successful"}
     except Exception as e:
         return {"error": str(e)}
 

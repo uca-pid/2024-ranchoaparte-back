@@ -32,7 +32,7 @@ def get_platebyID(plate_id: str):
     response = getPlateByID(plate_id)
     if "error" in response:
         raise HTTPException(status_code=500, detail=response["error"])
-    return {"Plate": response}
+    return {"message": response}
 def get_publicPlates():
     response = get_public_plates()
     if "error" in response:
