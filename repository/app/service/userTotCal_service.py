@@ -54,7 +54,7 @@ def count_recent_consecutive_days_with_calories(user_id):
         sorted_totCal_list = sorted(totCal_list, key=lambda x: x['day'], reverse=True)
 
         if not sorted_totCal_list:
-            return {"message": "No data found for user", "consecutive_days": 0}
+            return  {0}
 
         day_to_totCal = {}
         for entry in sorted_totCal_list:
