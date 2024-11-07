@@ -252,7 +252,53 @@ def user_notify(user, new_level):
 
     return {"notification": "Notification sent"}
 
-    
+def notifyUserAchievement(message, user_id):
+    data = {
+        'user_id': user_id,
+        'message': message,
+        'timestamp': datetime.now(),
+        'is_read': False
+    }
+
+    try:
+        new_review_ref = db.collection('UserNotifications').document()
+        new_review_ref.set(data)
+    except Exception as e:
+        print(f"Error sending notification: {e}")
+        return {"error": str(e)}
+
+    return {"notification": "Notification sent"}
+
+
+def complete_goal(user_id, goal_id):
+    try:
+        # Retrieve the user document
+        user_ref = db.collection('User').where('id_user', '==', user_id).stream()
+
+        # Extract user data from query result
+        user_doc = next(user_ref, None)
+        if not user_doc:
+            return {"error": "User not found"}
+        
+        user_data = user_doc.to_dict()
+        
+        # Initialize achievements if they don't exist
+        achievements = user_data.get('achievements', [])
+        
+        # Only add if not already in the list
+        if goal_id not in achievements:
+            achievements.append(goal_id)
+            user_doc.reference.update({'achievements': achievements})
+            message = "Congratulations! You achieved a new goal!"
+            result = notifyUserAchievement(message, user_id)
+        
+            if "error" in result:
+                return {"error": f"Notification error: {result['error']}"}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+    return {"message": "Goal completed and notification sent"}
 
 
 

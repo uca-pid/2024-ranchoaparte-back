@@ -11,6 +11,8 @@ class UserGoals(BaseModel):
     fats: int
     carbohydrates: int
     protein: int
+    sugar: int
+    caffeine: int
 
 
 class UserRegister(BaseModel):
@@ -22,7 +24,8 @@ class UserRegister(BaseModel):
     height: float = Field(..., ge=0)
     birthDate: datetime
     goals: Optional[UserGoals]
-    validation: str = ''
+    validation: int
+    achivements: List[int]
 
 
 class UserForgotPassword(BaseModel):

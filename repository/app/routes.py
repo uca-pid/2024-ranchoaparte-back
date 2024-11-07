@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from app.models.food import Food
-from app.controllers.user_controller import update_user_info, delete_user_by_id, user_by_id, resetPassword,update_user_validation,get_all_Users
+from app.controllers.user_controller import addGoal,update_user_info, delete_user_by_id, user_by_id, resetPassword,update_user_validation,get_all_Users
 from app.controllers.userTotCal_controller import updateDailyCalories_controller, createUserTotCal, get_TotCal, get_streak
 from app.controllers.food_controller import register_new_food, get_foods, get_food_by_id
 from app.controllers.category_controller import userCategoryLog, get_category, update_category_controller, delete_category
@@ -330,6 +330,10 @@ async def markAsRead(notification_id: str):
 @router.get("/PublicplatesNotFromUser/{user_id}", tags=['Plate'])
 def getNotUser_Publicplates(user_id: str):
     response = get_publicPlates_notUser(user_id)
+    return response
+@router.get("/addGoal/{user_id}", tags=['gamification'])
+def addGoal_Touser(user_id: str,goal_id:int):
+    response = addGoal(user_id,goal_id)
     return response
 
 

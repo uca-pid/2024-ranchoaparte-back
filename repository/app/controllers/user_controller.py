@@ -1,4 +1,4 @@
-from app.service.user_service import update_uservalidation,get_allusers,create_user, delete_user, reset_password, get_user_by_id, get_user_by_email, send_password_reset_email, login_user, get_current_user_service, update_user
+from app.service.user_service import update_uservalidation,get_allusers,create_user, delete_user, reset_password, get_user_by_id, get_user_by_email, send_password_reset_email, login_user, get_current_user_service, update_user,complete_goal
 from app.models.user import UserGoals, UserLogin, ResetPassword, UserRegister, UserForgotPassword, UpdateUserData
 from fastapi import HTTPException, Request
 
@@ -93,6 +93,11 @@ def get_all_Users():
     return response
 def update_user_validation(user_id: str):
     response = update_uservalidation(user_id)
+    if "error" in response:
+        raise HTTPException(status_code=400, detail=response["error"])
+    return response
+def addGoal(user_id:str, goal_id: int):
+    response = complete_goal(user_id,goal_id)
     if "error" in response:
         raise HTTPException(status_code=400, detail=response["error"])
     return response

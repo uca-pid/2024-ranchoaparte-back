@@ -1,6 +1,7 @@
 
 from ..config import db
 
+
 def create_review(review_data):
 
     review_data_dict = review_data.dict()
@@ -58,10 +59,10 @@ def getamountFiveStarReviews(id_user):
                 if review_dict.get('score', 0) >= 4:
                     five_star_count += 1
                     break  # Count each plate only once for 4.5+ rating
-
         return five_star_count
     
     except Exception as e:
         return {"error": str(e)}
+
 
     
